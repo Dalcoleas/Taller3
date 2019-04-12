@@ -2,6 +2,7 @@ package com.example.coins
 
 import android.support.v7.view.menu.ActionMenuItemView
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,8 +28,17 @@ class CoinAdapter(val items: ArrayList<Coin>, val clickListener: (Coin)->Unit) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(items[position],clickListener)
 
-        //Glide.with(holder.itemView.context).load().into(holder.itemView.img_poke) en load pegar url de cada imagen, pero antes verificar si ese
-        //url existe y es válido
+        var image = items[position].img
+        Log.d("msg",image)
+
+        val len:Int = image.length
+
+        if(len < 20){
+            Glide.with(holder.itemView.context).load(R.drawable.ic_launcher_foreground).into(holder.itemView.img_coin)
+        } else{
+            Glide.with(holder.itemView.context).load(image).into(holder.itemView.img_coin)
+        }
+
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){

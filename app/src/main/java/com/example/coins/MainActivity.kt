@@ -57,31 +57,36 @@ class MainActivity : AppCompatActivity() {
 
         var x = 0
 
-        var id:String
-        var nombre:String
-        var pais:String
-        var valor:Int
-        var valorUs:Int
+        var id:String?
+        var nombre:String?
+        var pais:String?
+        var valor:Int?
+        var valorUs:Int?
         var anio:Int?
-        var resenia:String
-        var disponible:Boolean
+        var resenia:String?
+        var disponible:Boolean?
         var imagen:String
 
         val coins = ArrayList<Coin>()
 
 
-        while(x < coin.length()-1) {
+        while(x < coin.length()) {
             val jsonObject = coin.getJSONObject(x)
 
-            id = jsonObject.getString("_id")
-            nombre = jsonObject.getString("nombre")
-            pais = jsonObject.getString("country")
-            valor = jsonObject.getInt("value")
-            valorUs = jsonObject.getInt("value_us")
-            anio = jsonObject.getInt("year")
-            resenia = jsonObject.getString("review")
-            disponible = jsonObject.getBoolean("available")
+            if(jsonObject.isNull("year")){
+                jsonObject.put("year",0)
+            }
+
+            id = jsonObject?.getString("_id")
+            nombre = jsonObject?.getString("nombre")
+            pais = jsonObject?.getString("country")
+            valor = jsonObject?.getInt("value")
+            valorUs = jsonObject?.getInt("value_us")
+            anio = jsonObject?.getInt("year")
+            resenia = jsonObject?.getString("review")
+            disponible = jsonObject?.getBoolean("available")
             imagen = jsonObject.getString("img")
+
 
             coins.add(Coin(
                     id,

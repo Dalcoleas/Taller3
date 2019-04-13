@@ -6,4 +6,10 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="costa_rica">Costa Rica</string>
+    <string name="honduras">Honduras</string>
+    <string name="guatemala">Guatemala</string>
+    <string name="el_salvador">El Salvador</string>
+    <string name="todos">Todos</string>
+    <string name="filter_label">Filtrar por pais</string>
 </resources>

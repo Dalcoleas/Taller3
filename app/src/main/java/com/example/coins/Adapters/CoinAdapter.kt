@@ -1,20 +1,19 @@
-package com.example.coins
+package com.example.coins.Adapters
 
-import android.support.v7.view.menu.ActionMenuItemView
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import kotlinx.android.synthetic.main.coin_list.view.*
-import java.text.FieldPosition
 import com.example.coins.Models.Coin
+import com.example.coins.MyAdapter
+import com.example.coins.R
 
 
-
-class CoinAdapter(var items: ArrayList<Coin>, val clickListener: (Coin)->Unit) : RecyclerView.Adapter<CoinAdapter.ViewHolder>() , MyAdapter{
+class CoinAdapter(var items: ArrayList<Coin>, val clickListener: (Coin)->Unit) : RecyclerView.Adapter<CoinAdapter.ViewHolder>() ,
+    MyAdapter {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)

@@ -1,4 +1,4 @@
-package com.example.coins
+package com.example.coins.Network
 
 import android.net.Uri
 import android.util.Log

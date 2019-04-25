@@ -1,9 +1,9 @@
-package com.example.coins
+package com.example.coins.Activities
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
 import com.example.coins.Models.Coin
+import com.example.coins.R
 
 class CoinViewer : AppCompatActivity(){
 
@@ -15,7 +15,9 @@ class CoinViewer : AppCompatActivity(){
 
         if(mIntent!=null){
 
-            val receiver: Coin = intent?.extras?.getParcelable("COIN") ?:Coin(R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString(), 0,0,0, R.string.n_a_value.toString(), false,R.string.n_a_value.toString())
+            val receiver: Coin = intent?.extras?.getParcelable("COIN") ?:Coin(
+                R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString(), 0,0,0, R.string.n_a_value.toString(), false,
+                R.string.n_a_value.toString())
 
         }
 

@@ -1,32 +1,27 @@
-package com.example.coins
+package com.example.coins.Activities
 
-import android.content.Intent
 import android.content.res.Configuration
 import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
-import com.bumptech.glide.util.Util
+import com.example.coins.AppConstants
+import com.example.coins.Fragments.MainDetailsFragment
 import com.example.coins.Models.Coin
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.android.synthetic.main.fragment_main_list.*
 import org.json.JSONObject
-import java.net.HttpURLConnection
-import java.net.URL
-import com.example.coins.AppConstants
+import com.example.coins.Fragments.MainListFragment
+import com.example.coins.Network.NetworkUtils
+import com.example.coins.R
 import java.io.IOException
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MainListFragment.ListenerTools  {
@@ -38,6 +33,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var coinList = ArrayList<Coin>()
 
     private lateinit var mainFragment : MainListFragment
+    private lateinit var mainContentFragment : MainDetailsFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +47,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         val toggle = ActionBarDrawerToggle(
-            this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
+            this, drawer_layout, toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
         )
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
@@ -87,7 +85,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.main_fragment
 
         else{
-            R.id.main_fragment
+            mainContentFragment = MainDetailsFragment.newInstance(Coin("Cualquier estupidez",
+                R.string.n_a_value.toString(),
+                R.string.n_a_value.toString(),
+                0,
+                0,
+                0,
+                R.string.n_a_value.toString(),
+                false,
+                R.string.n_a_value.toString()))
+
+            changeFragment(R.id.land_main_cont_fragment, mainContentFragment)
+
+            R.id.land_main_fragment
         }
 
         changeFragment(resource,mainFragment)

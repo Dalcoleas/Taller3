@@ -1,15 +1,18 @@
-package com.example.coins
+package com.example.coins.Fragments
 
 import android.content.Context
 import android.content.res.Configuration
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.coins.AppConstants
+import com.example.coins.Adapters.CoinAdapter
 import com.example.coins.Models.Coin
+import com.example.coins.MyAdapter
+import com.example.coins.R
 import kotlinx.android.synthetic.main.fragment_main_list.view.*
 
 class MainListFragment : Fragment() {
@@ -19,7 +22,7 @@ class MainListFragment : Fragment() {
     var listenerTools :  ListenerTools? = null
 
     companion object {
-        fun newInstance(dataset : ArrayList<Coin>): MainListFragment{
+        fun newInstance(dataset : ArrayList<Coin>): MainListFragment {
             val newFragment = MainListFragment()
             newFragment.listCoin = dataset
             return newFragment
@@ -48,10 +51,16 @@ class MainListFragment : Fragment() {
         val linearLayoutManager = LinearLayoutManager(this.context)
 
         if(orientation == Configuration.ORIENTATION_PORTRAIT){
-            CoinAdapter = CoinAdapter(listCoin, {item:Coin -> listenerTools?.managePortraitItemClick(item)})
+            CoinAdapter =
+                CoinAdapter(
+                    listCoin,
+                    { item: Coin -> listenerTools?.managePortraitItemClick(item) })
         }
         if(orientation == Configuration.ORIENTATION_LANDSCAPE){
-            CoinAdapter = CoinAdapter(listCoin, {item:Coin->listenerTools?.manageLandscapeItemClick(item)})
+            CoinAdapter =
+                CoinAdapter(
+                    listCoin,
+                    { item: Coin -> listenerTools?.manageLandscapeItemClick(item) })
         }
 
         container.rv_coins.adapter = CoinAdapter as CoinAdapter

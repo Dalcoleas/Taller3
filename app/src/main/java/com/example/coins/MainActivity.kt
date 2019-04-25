@@ -1,10 +1,14 @@
 package com.example.coins
 
+import android.content.Intent
+import android.content.res.Configuration
 import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
+import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.GridLayoutManager
@@ -13,18 +17,27 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import com.bumptech.glide.util.Util
 import com.example.coins.Models.Coin
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.fragment_main_list.*
 import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
+import com.example.coins.AppConstants
+import java.io.IOException
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener  {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MainListFragment.ListenerTools  {
+
 
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
+
+    private var coinList = ArrayList<Coin>()
+
+    private lateinit var mainFragment : MainListFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +58,53 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         nav_view.setNavigationItemSelectedListener(this)
 
-        AssyncTaskHandleJson().execute()
+        initMainFragment()
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelableArrayList(AppConstants.dataset_saveinstance_key,coinList)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun managePortraitItemClick(item: Coin) {
+        val coinBundle = Bundle()
+        //coinBundle.putParcelable("COIN",coin)
+        //startActivity(Intent(this, CoinViewer::class.java).putExtra())
+
+
+    }
+
+    override fun manageLandscapeItemClick(item: Coin) {
+
+    }
+
+    fun initMainFragment(){
+
+        mainFragment = MainListFragment.newInstance(coinList)
+
+
+        val resource = if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
+            R.id.main_fragment
+
+        else{
+            R.id.main_fragment
+        }
+
+        changeFragment(resource,mainFragment)
+
+        FetchCoinTask().execute("")
+
+    }
+
+    fun addCoinToList(coin: Coin){
+        coinList.add(coin)
+        mainFragment.updateCoinAdapter(coinList)
+        Log.d("Number", coinList.size.toString())
+    }
+
+
+    private fun changeFragment(id: Int, frag:Fragment){ supportFragmentManager.beginTransaction().replace(id,frag).commit()}
+
 
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
@@ -96,106 +154,65 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-    inner class AssyncTaskHandleJson : AsyncTask<String, Void, String>(){
-        override fun doInBackground(vararg p0: String?): String {
-            val info : String
-            val url = "https://apimoviles.herokuapp.com/api/coin"
-            val conn = URL(url).openConnection() as HttpURLConnection
 
-            try{
-                conn.connect()
-                info = conn.inputStream.use { it.reader().use{reader-> reader.readText()} }
-                Log.d("msg", "URL verificada con éxito!")
-                Log.d("msg", info)
-            } finally {
-                conn.disconnect()
-            }
-            return info
-        }
+    private inner class FetchCoinTask : AsyncTask<String, Void, String>() {
 
-        override fun onPostExecute(result: String?) {
-            super.onPostExecute(result)
-            handleJson(result)
-        }
-    }
+        override fun doInBackground(vararg query: String): String {
 
-    private fun handleJson(result: String?){
+            if (query.isNullOrEmpty()) return ""
 
-        val main = JSONObject(result)
+            val ID = query[0]
+            val pokeAPI = NetworkUtils().buildUrl("",ID)
 
-        val coin = main.getJSONArray("buscadores")
-
-        var x = 0
-
-        var id:String?
-        var nombre:String?
-        var pais:String?
-        var valor:Int?
-        var valorUs:Int?
-        var anio:Int?
-        var resenia:String?
-        var disponible:Boolean?
-        var imagen:String
-
-        val coins = ArrayList<Coin>()
-
-
-        while(x < coin.length()) {
-            val jsonObject = coin.getJSONObject(x)
-
-            if(jsonObject.isNull("year")){
-                jsonObject.put("year",0)
+            return try {
+                NetworkUtils().getResponseFromHttpUrl(pokeAPI)
+            } catch (e: IOException) {
+                e.printStackTrace()
+                ""
             }
 
-            id = jsonObject?.getString("_id")
-            nombre = jsonObject?.getString("nombre")
-            pais = jsonObject?.getString("country")
-            valor = jsonObject?.getInt("value")
-            valorUs = jsonObject?.getInt("value_us")
-            anio = jsonObject?.getInt("year")
-            resenia = jsonObject?.getString("review")
-            disponible = jsonObject?.getBoolean("available")
-            imagen = jsonObject.getString("img")
-
-
-            coins.add(Coin(
-                    id,
-                    nombre,
-                    pais,
-                    valor,
-                    valorUs,
-                    anio,
-                    resenia,
-                    disponible,
-                    imagen
-            ))
-            x++
         }
 
-        /*val coins:MutableList<Coin> = MutableList(4){
-            i-> Coin(JSONObject(coin.getString(i)).getString("_id"),
-            JSONObject(coin.getString(i)).getString("nombre"),
-            JSONObject(coin.getString(i)).getString("country"),
-            JSONObject(coin.getString(i)).getInt("value"),
-            JSONObject(coin.getString(i)).getInt("value_us"),
-            JSONObject(coin.getString(i)).getInt("year"),
-            JSONObject(coin.getString(i)).getString("review"),
-            JSONObject(coin.getString(i)).getBoolean("available"),
-            JSONObject(coin.getString(i)).getString("img"))
-        }*/
+        override fun onPostExecute(coinInfo: String) {
+            Log.d("msg", coinInfo)
 
-        viewManager = GridLayoutManager(this,2)
-        viewAdapter = CoinAdapter(coins,{item: Coin->itemClicked(item)})
+            val coins = if (!coinInfo.isEmpty()){
+                val root = JSONObject(coinInfo)
+                val results = root.getJSONArray("buscadores")
 
-        rv_coins.apply {
-            setHasFixedSize(true)
-            layoutManager = viewManager
-            adapter = viewAdapter
+                MutableList(4){i->
+                    val result = JSONObject(results[i].toString())
+
+                    Coin(result.getString("_id"),
+                        result.getString("nombre"),
+                        result.getString("country"),
+                        result.getInt("value"),
+                        result.getInt("value_us"),
+                        2019,
+                        result.getString("review"),
+                        result.getBoolean("available"),
+                        result.getString("img"))
+                }
+
+            } else{
+                MutableList(4){
+                    Coin("Cualquier estupidez",
+                        R.string.n_a_value.toString(),
+                        R.string.n_a_value.toString(),
+                        0,
+                        0,
+                        0,
+                        R.string.n_a_value.toString(),
+                        false,
+                        R.string.n_a_value.toString())
+                }
+            }
+
+            for(coin in coins){
+                addCoinToList(coin)
+            }
         }
     }
 
-    fun itemClicked(item:Coin){
 
-        Toast.makeText(this,"Clicked:  ${item.country}", Toast.LENGTH_LONG).show()
-    }
 }

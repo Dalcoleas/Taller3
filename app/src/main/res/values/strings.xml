@@ -11,6 +11,7 @@
     <string name="guatemala">Guatemala</string>
     <string name="el_salvador">El Salvador</string>
     <string name="todos">Todos</string>
+    <string name="n_a_value">N/A</string>
     <string name="filter_label">Filtrar por pais</string>
 
     <!-- TODO: Remove or change this placeholder text -->

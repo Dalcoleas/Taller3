@@ -110,11 +110,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
-    fun addCoinToList(coin: Coin){
+    /*fun addCoinToList(coin: Coin){
         coinList.add(coin)
         mainFragment.updateCoinAdapter(coinList)
         Log.d("Number", coinList.size.toString())
-    }
+    }*/
 
 
     private fun changeFragment(id: Int, frag:Fragment){ supportFragmentManager.beginTransaction().replace(id,frag).commit()}
@@ -193,13 +193,33 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         override fun onPostExecute(coinInfo: String) {
-            Log.d("msg", coinInfo)
+                Log.d("msg", coinInfo)
 
-            val coins = if (!coinInfo.isEmpty()){
                 val root = JSONObject(coinInfo)
                 val results = root.getJSONArray("buscadores")
 
-                MutableList(4){i->
+                var x = 0
+
+                while(x < results.length()){
+
+                    val result = JSONObject(results[x].toString())
+
+                    coinList.add(Coin(result.getString("_id"),
+                            result.getString("nombre"),
+                            result.getString("country"),
+                            result.getInt("value"),
+                            result.getInt("value_us"),
+                            2019,
+                            result.getString("review"),
+                            result.getBoolean("available"),
+                            result.getString("img")))
+
+                    x++
+                }
+
+                mainFragment.updateCoinAdapter(coinList)
+
+                /*MutableList(4){i->
                     val result = JSONObject(results[i].toString())
 
                     Coin(result.getString("_id"),
@@ -225,11 +245,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         false,
                         R.string.n_a_value.toString())
                 }
-            }
+            } */
 
-            for(coin in coins){
+            /*for(coin in coins){
                 addCoinToList(coin)
-            }
+            }*/
         }
     }
 
@@ -265,7 +285,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         with(cursor) {
             while (moveToNext()) {
-                var persona = Coin(
+                var coin = Coin(
                     getString(getColumnIndexOrThrow(BaseColumns._ID)),
                     getString(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_NOMBRE)),
                     getString(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_COUNTRY)),
@@ -277,8 +297,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     getString(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_IMG))
 
                 )
-
-                addCoinToList(persona)
+                coinList.add(coin)
+                mainFragment.updateCoinAdapter(coinList)
             }
         }
 

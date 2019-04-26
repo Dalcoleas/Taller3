@@ -37,11 +37,11 @@ class CoinAdapter(var items: ArrayList<Coin>, val clickListener: (Coin)->Unit) :
             tv_name.text = item.nombre
             tv_country.text = item.country
 
-            Glide.with(itemView.context)
-                .load(item.img)
-                .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(itemView.img_coin)
+                Glide.with(itemView.context)
+                    .load(item.img)
+                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(itemView.img_coin)
 
             itemView.setOnClickListener{(clickListener(item))}
         }

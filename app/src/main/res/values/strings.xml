@@ -13,6 +13,8 @@
     <string name="todos">Todos</string>
     <string name="n_a_value">N/A</string>
     <string name="filter_label">Filtrar por pais</string>
+    <string name="alert_person_not_saved">No se ha podido guardar. Inténtelo luego.</string>
+    <string name="alert_person_saved_success">Se ha guardado con éxito la persona #</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

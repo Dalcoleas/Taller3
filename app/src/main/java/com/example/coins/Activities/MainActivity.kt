@@ -1,5 +1,6 @@
 package com.example.coins.Activities
 
+import android.content.ContentValues
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.AsyncTask
@@ -106,7 +107,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         changeFragment(resource,mainFragment)
 
-        FetchCoinTask().execute("")
+        var coins = readCoins()
+        Log.d("Read", coins.toString())
+
+        if(coins.isNotEmpty())
+        {
+            Log.d("Read", "Leido desde la base de datos local")
+        }
+        else
+        {
+            FetchCoinTask().execute("")
+            Log.d("Read", "Leido desde api")
+
+        }
 
     }
 
@@ -203,21 +216,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 while(x < results.length()){
 
                     val result = JSONObject(results[x].toString())
+                    var coin = Coin(result.getString("_id"),
+                        result.getString("nombre"),
+                        result.getString("country"),
+                        result.getInt("value"),
+                        result.getInt("value_us"),
+                        2019,
+                        result.getString("review"),
+                        result.getBoolean("available"),
+                        result.getString("img"))
 
-                    coinList.add(Coin(result.getString("_id"),
-                            result.getString("nombre"),
-                            result.getString("country"),
-                            result.getInt("value"),
-                            result.getInt("value_us"),
-                            2019,
-                            result.getString("review"),
-                            result.getBoolean("available"),
-                            result.getString("img")))
+                    coinList.add(coin)
+                    createCoin(coin)
 
                     x++
                 }
 
-                mainFragment.updateCoinAdapter(coinList)
+            mainFragment.updateCoinAdapter(coinList)
 
                 /*MutableList(4){i->
                     val result = JSONObject(results[i].toString())
@@ -253,7 +268,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    private fun readPersonas(): List<Coin> {
+    private fun readCoins(): List<Coin> {
 
         val db = dbHelper.readableDatabase
 
@@ -303,6 +318,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         return coinList
+    }
+
+    private fun createCoin(item:Coin)
+    {
+        val db = dbHelper.writableDatabase
+        val values = ContentValues().apply {
+            put(DatabaseContract.CoinEntry.COLUMN_COUNTRY, item.country)
+            put(DatabaseContract.CoinEntry.COLUMN_IMG, item.img)
+            put(DatabaseContract.CoinEntry.COLUMN_YEAR, item.year)
+            put(DatabaseContract.CoinEntry.COLUMN_REVIEW, item.review)
+            put(DatabaseContract.CoinEntry.COLUMN_AVAILABLE, item.available.toString())
+            put(DatabaseContract.CoinEntry.COLUMN_ID, item._id)
+            put(DatabaseContract.CoinEntry.COLUMN_NOMBRE, item.nombre)
+            put(DatabaseContract.CoinEntry.COLUMN_VALUE, item.value)
+            put(DatabaseContract.CoinEntry.COLUMN_VALUE_US, item.value_us)
+        }
+
+        val newRowId = db?.insert(DatabaseContract.CoinEntry.TABLE_NAME, null, values)
+
     }
 
 

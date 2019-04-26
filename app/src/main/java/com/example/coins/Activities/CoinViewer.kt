@@ -30,6 +30,7 @@ class CoinViewer : AppCompatActivity(){
     }
 
     fun init(coin: Coin){
+
         Glide.with(this)
             .load(coin.img)
             .centerCrop()

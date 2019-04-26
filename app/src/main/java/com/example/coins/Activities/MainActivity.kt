@@ -1,10 +1,12 @@
 package com.example.coins.Activities
 
+import android.content.ContentValues
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.BaseColumns
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
@@ -16,6 +18,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import com.example.coins.AppConstants
+import com.example.coins.Database.Database
+import com.example.coins.Database.DatabaseContract
 import com.example.coins.Fragments.MainDetailsFragment
 import com.example.coins.Models.Coin
 import kotlinx.android.synthetic.main.activity_main.*
@@ -29,6 +33,7 @@ import java.io.IOException
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MainListFragment.ListenerTools {
 
+    private var dbHelper = Database(this)
 
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
@@ -106,7 +111,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         changeFragment(resource, mainFragment)
 
 
-        FetchCoinTask().execute("")
+        var coins = readCoins()
+        Log.d("Read", coins.toString())
+
+        if(coins.isNotEmpty())
+        {
+            Log.d("Read", "Leido desde la base de datos local")
+        }
+        else
+        {
+            FetchCoinTask().execute("")
+            Log.d("Read", "Leido desde api")
+
+        }
 
     }
 
@@ -170,6 +187,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
+    override fun onDestroy() {
+        dbHelper.close()
+        super.onDestroy()
+    }
+
 
     private inner class FetchCoinTask : AsyncTask<String, Void, String>() {
 
@@ -200,21 +222,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 while(x < results.length()){
 
                     val result = JSONObject(results[x].toString())
+                    var coin = Coin(result.getString("_id"),
+                        result.getString("nombre"),
+                        result.getString("country"),
+                        result.getInt("value"),
+                        result.getInt("value_us"),
+                        2019,
+                        result.getString("review"),
+                        result.getBoolean("available"),
+                        result.getString("img"))
 
-                    coinList.add(Coin(result.getString("_id"),
-                            result.getString("nombre"),
-                            result.getString("country"),
-                            result.getInt("value"),
-                            result.getInt("value_us"),
-                            2019,
-                            result.getString("review"),
-                            result.getBoolean("available"),
-                            result.getString("img")))
+                    coinList.add(coin)
+                    createCoin(coin)
 
                     x++
                 }
 
-                mainFragment.updateCoinAdapter(coinList)
+            mainFragment.updateCoinAdapter(coinList)
 
                 /*MutableList(4){i->
                     val result = JSONObject(results[i].toString())
@@ -249,5 +273,77 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }*/
         }
     }
+
+    private fun readCoins(): List<Coin> {
+
+        val db = dbHelper.readableDatabase
+
+        val projection = arrayOf(
+            BaseColumns._ID,
+            DatabaseContract.CoinEntry.COLUMN_NOMBRE,
+            DatabaseContract.CoinEntry.COLUMN_COUNTRY,
+            DatabaseContract.CoinEntry.COLUMN_VALUE,
+            DatabaseContract.CoinEntry.COLUMN_VALUE_US,
+            DatabaseContract.CoinEntry.COLUMN_YEAR,
+            DatabaseContract.CoinEntry.COLUMN_REVIEW,
+            DatabaseContract.CoinEntry.COLUMN_AVAILABLE,
+            DatabaseContract.CoinEntry.COLUMN_IMG
+        )
+
+        val sortOrder = "${DatabaseContract.CoinEntry.COLUMN_NOMBRE} DESC"
+
+        val cursor = db.query(
+            DatabaseContract.CoinEntry.TABLE_NAME, // nombre de la tabla
+            projection, // columnas que se devolverán
+            null, // Columns where clausule
+            null, // values Where clausule
+            null, // Do not group rows
+            null, // do not filter by row
+            sortOrder // sort order
+        )
+
+        coinList = ArrayList<Coin>()
+
+        with(cursor) {
+            while (moveToNext()) {
+                var coin = Coin(
+                    getString(getColumnIndexOrThrow(BaseColumns._ID)),
+                    getString(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_NOMBRE)),
+                    getString(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_COUNTRY)),
+                    getInt(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_VALUE)),
+                    getInt(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_VALUE_US)),
+                    getInt(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_YEAR)),
+                    getString(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_REVIEW)),
+                    getString(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_AVAILABLE)).toBoolean(),
+                    getString(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_IMG))
+
+                )
+                coinList.add(coin)
+                mainFragment.updateCoinAdapter(coinList)
+            }
+        }
+
+        return coinList
+    }
+
+    private fun createCoin(item:Coin)
+    {
+        val db = dbHelper.writableDatabase
+        val values = ContentValues().apply {
+            put(DatabaseContract.CoinEntry.COLUMN_COUNTRY, item.country)
+            put(DatabaseContract.CoinEntry.COLUMN_IMG, item.img)
+            put(DatabaseContract.CoinEntry.COLUMN_YEAR, item.year)
+            put(DatabaseContract.CoinEntry.COLUMN_REVIEW, item.review)
+            put(DatabaseContract.CoinEntry.COLUMN_AVAILABLE, item.available.toString())
+            put(DatabaseContract.CoinEntry.COLUMN_ID, item._id)
+            put(DatabaseContract.CoinEntry.COLUMN_NOMBRE, item.nombre)
+            put(DatabaseContract.CoinEntry.COLUMN_VALUE, item.value)
+            put(DatabaseContract.CoinEntry.COLUMN_VALUE_US, item.value_us)
+        }
+
+        val newRowId = db?.insert(DatabaseContract.CoinEntry.TABLE_NAME, null, values)
+
+    }
+
 
 }

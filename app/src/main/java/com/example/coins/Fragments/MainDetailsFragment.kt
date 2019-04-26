@@ -11,7 +11,7 @@ import com.example.coins.R
 import kotlinx.android.synthetic.main.fragment_main_details.view.*
 
 class MainDetailsFragment : Fragment() {
-    var coin = Coin("Cualquier estupidez",
+    var coin = Coin("C",
         R.string.n_a_value.toString(),
         R.string.n_a_value.toString(),
         0,
@@ -41,7 +41,10 @@ class MainDetailsFragment : Fragment() {
     fun bindData(view: View){
         view.name_main_content_fragment.text = coin.nombre
         view.country_main_content_fragment.text = coin.country
-        view.value_1_main_content_fragment.text = coin.value.toString()
+        view.value_main_content_fragment.text = coin.value.toString()
+        view.value_us_main_content_fragment.text = coin.value_us.toString()
+        view.year_main_content_fragment.text = coin.year.toString()
+        view.available_main_content_fragment.text = coin.available.toString()
         view.review_main_content_fragment.text = coin.review
 
         Glide.with(view.context)

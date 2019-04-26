@@ -1,5 +1,6 @@
 package com.example.coins.Activities
 
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
@@ -66,14 +67,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun managePortraitItemClick(item: Coin) {
         val coinBundle = Bundle()
-        //coinBundle.putParcelable("COIN",coin)
-        //startActivity(Intent(this, CoinViewer::class.java).putExtra())
-
-
+        coinBundle.putParcelable("COIN",item)
+        startActivity(Intent(this, CoinViewer::class.java).putExtras(coinBundle))
     }
 
     override fun manageLandscapeItemClick(item: Coin) {
-
+        mainContentFragment = MainDetailsFragment.newInstance(item)
+        changeFragment(R.id.land_main_cont_fragment, mainContentFragment)
     }
 
     fun initMainFragment(){

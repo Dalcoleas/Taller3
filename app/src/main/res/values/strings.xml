@@ -20,4 +20,8 @@
     <string name="country">Country</string>
     <string name="value">Value</string>
     <string name="review">Review</string>
+    <string name="disponible">Disponible</string>
+    <string name="year">Año</string>
+    <string name="valor">Valor</string>
+    <string name="valor_us">Valor US</string>
 </resources>

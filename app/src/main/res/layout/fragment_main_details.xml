@@ -19,7 +19,7 @@
         />
 
         <TextView
-                android:id="@+id/pokemon_name_main_content_fragment"
+                android:id="@+id/name_main_content_fragment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignEnd="@id/image_main_content_fragment"
@@ -71,7 +71,40 @@
                 />
 
                 <TextView
-                        android:id="@+id/name_main_content_fragment"
+                        android:id="@+id/value_main_content_fragment"
+
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:layout_marginBottom="4dp"
+
+                        android:text="@string/n_a_value"
+                />
+
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+            >
+
+                <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:layout_marginBottom="4dp"
+
+                        android:text="@string/name"
+                        android:textStyle="bold"
+                />
+
+                <TextView
+                        android:id="@+id/value_us_main_content_fragment"
 
                         android:layout_width="0dp"
                         android:layout_weight="3"
@@ -139,7 +172,7 @@
                 />
 
                 <TextView
-                        android:id="@+id/value_1_main_content_fragment"
+                        android:id="@+id/year_main_content_fragment"
 
                         android:layout_width="0dp"
                         android:layout_weight="3"
@@ -174,6 +207,39 @@
 
                 <TextView
                         android:id="@+id/review_main_content_fragment"
+
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:layout_marginBottom="4dp"
+
+                        android:text="@string/n_a_value"
+                />
+
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+            >
+
+                <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:layout_marginBottom="4dp"
+
+                        android:text="@string/review"
+                        android:textStyle="bold"
+                />
+
+                <TextView
+                        android:id="@+id/available_main_content_fragment"
 
                         android:layout_width="0dp"
                         android:layout_weight="3"

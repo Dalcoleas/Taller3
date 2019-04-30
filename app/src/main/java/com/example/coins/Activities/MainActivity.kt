@@ -17,6 +17,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
+import android.widget.Toast
 import com.example.coins.AppConstants
 import com.example.coins.Database.Database
 import com.example.coins.Database.DatabaseContract
@@ -30,6 +31,8 @@ import com.example.coins.Network.NetworkUtils
 import com.example.coins.R
 import kotlinx.android.synthetic.main.fragment_main_list.*
 import java.io.IOException
+
+
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MainListFragment.ListenerTools {
 
@@ -67,6 +70,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         nav_view.setNavigationItemSelectedListener(this)
 
+
+        coinList = ArrayList<Coin>()
+
+        var coins = readCoins()
+        Log.d("Read", coins.toString())
+
+        if(coins.isNotEmpty())
+        {
+            coinList = coins as ArrayList<Coin>
+            Log.d("Read", "Leido desde la base de datos local")
+            Toast.makeText(this@MainActivity, "Leido desde la base de datos local", Toast.LENGTH_LONG).show()
+
+        }
+        else
+        {
+            FetchCoinTask().execute("")
+
+        }
+
         initMainFragment()
 
     }
@@ -90,21 +112,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     fun initMainFragment() {
 
-        coinList = ArrayList<Coin>()
 
-        var coins = readCoins()
-        Log.d("Read", coins.toString())
-
-        if(coins.isNotEmpty())
-        {
-            coinList = coins as ArrayList<Coin>
-            Log.d("Read", "Leido desde la base de datos local")
-        }
-        else
-        {
-            FetchCoinTask().execute("")
-            Log.d("Read", "Leido desde api")
-        }
 
         mainFragment = MainListFragment.newInstance(coinList)
 
@@ -172,19 +180,65 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_all -> {
-                // Handle the camera action
+                coinList = ArrayList<Coin>()
+
+                var coins = readCoins()
+                Log.d("Read", coins.toString())
+
+                coinList = coins as ArrayList<Coin>
+                Log.d("Read", "Mostrando todas las monedas")
+
+                initMainFragment()
             }
             R.id.nav_el_salvador -> {
+                coinList = ArrayList<Coin>()
 
+                var coins = filterCoins("El Salvador")
+
+                coinList = coins as ArrayList<Coin>
+                Log.d("Read", "Monedas de El Salvador")
+                Log.d("Read", coins.toString())
+                Toast.makeText(this@MainActivity, "Filtro: El Salvador", Toast.LENGTH_LONG).show()
+
+                initMainFragment()
             }
             R.id.nav_guatemala -> {
+                coinList = ArrayList<Coin>()
 
+                var coins = filterCoins("Guatemala")
+
+                coinList = coins as ArrayList<Coin>
+                Log.d("Read", "Monedas de Guatemala")
+                Log.d("Read", coins.toString())
+                Toast.makeText(this@MainActivity, "Filtro: Guatemala", Toast.LENGTH_LONG).show()
+
+                initMainFragment()
             }
             R.id.nav_honduras -> {
+                coinList = ArrayList<Coin>()
 
+                var coins = filterCoins("Honduras")
+
+                coinList = coins as ArrayList<Coin>
+                Log.d("Read", "Monedas de Honduras")
+                Log.d("Read", coins.toString())
+
+                Toast.makeText(this@MainActivity, "Filtro: Honduras", Toast.LENGTH_LONG).show()
+
+                initMainFragment()
             }
             R.id.nav_costa_rica -> {
+                coinList = ArrayList<Coin>()
 
+                var coins = filterCoins("Costa Rica")
+
+                coinList = coins as ArrayList<Coin>
+                Log.d("Read", "Monedas de Costa Rica")
+                Log.d("Read", coins.toString())
+
+                Toast.makeText(this@MainActivity, "Filtro: Costa Rica", Toast.LENGTH_LONG).show()
+
+                initMainFragment()
             }
         }
 
@@ -247,7 +301,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             mainFragment.updateCoinAdapter(coinList)
             Log.d("Read", "Leido desde api")
-
+            Toast.makeText(this@MainActivity, "Leido desde api", Toast.LENGTH_LONG).show()
 
         }
     }
@@ -278,6 +332,62 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             projection, // columnas que se devolverán
             null, // Columns where clausule
             null, // values Where clausule
+            null, // Do not group rows
+            null, // do not filter by row
+            sortOrder // sort order
+        )
+
+
+        with(cursor) {
+            while (moveToNext()) {
+                var coin = Coin(
+                    getString(getColumnIndexOrThrow(BaseColumns._ID)),
+                    getString(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_NOMBRE)),
+                    getString(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_COUNTRY)),
+                    getInt(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_VALUE)),
+                    getInt(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_VALUE_US)),
+                    getInt(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_YEAR)),
+                    getString(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_REVIEW)),
+                    getString(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_AVAILABLE)).toBoolean(),
+                    getString(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_IMG))
+
+                )
+                coinList2.add(coin)
+            }
+        }
+
+        return coinList2
+    }
+
+    private fun filterCoins(country:String): List<Coin> {
+
+        val db = dbHelper.readableDatabase
+
+        var coinList2 = ArrayList<Coin>()
+
+
+        val projection = arrayOf(
+            BaseColumns._ID,
+            DatabaseContract.CoinEntry.COLUMN_NOMBRE,
+            DatabaseContract.CoinEntry.COLUMN_COUNTRY,
+            DatabaseContract.CoinEntry.COLUMN_VALUE,
+            DatabaseContract.CoinEntry.COLUMN_VALUE_US,
+            DatabaseContract.CoinEntry.COLUMN_YEAR,
+            DatabaseContract.CoinEntry.COLUMN_REVIEW,
+            DatabaseContract.CoinEntry.COLUMN_AVAILABLE,
+            DatabaseContract.CoinEntry.COLUMN_IMG
+        )
+
+        val sortOrder = "${DatabaseContract.CoinEntry.COLUMN_NOMBRE} DESC"
+
+        val whereClause = DatabaseContract.CoinEntry.COLUMN_COUNTRY + "=?"
+        val whereArgs = arrayOf<String>(country)
+
+        val cursor = db.query(
+            DatabaseContract.CoinEntry.TABLE_NAME, // nombre de la tabla
+            projection, // columnas que se devolverán
+            whereClause, // Columns where clausule
+            whereArgs, // values Where clausule
             null, // Do not group rows
             null, // do not filter by row
             sortOrder // sort order

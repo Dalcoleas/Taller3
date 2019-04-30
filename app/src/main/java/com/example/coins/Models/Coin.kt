@@ -12,7 +12,7 @@ data class Coin (
     val year:Int?,
     val review:String?,
     val available:Boolean?,
-    val img:String
+    val img:String?
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(

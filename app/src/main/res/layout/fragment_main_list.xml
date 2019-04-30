@@ -3,7 +3,15 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context=".Fragments.MainListFragment">
+             tools:context=".Fragments.MainListFragment"
+             android:orientation="vertical">
+
+    <Button
+        android:id="@+id/bt_act"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/update"/>
 
     <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_coins"

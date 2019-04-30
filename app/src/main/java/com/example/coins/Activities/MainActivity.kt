@@ -16,6 +16,7 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
 import com.example.coins.AppConstants
 import com.example.coins.Database.Database
 import com.example.coins.Database.DatabaseContract
@@ -27,9 +28,10 @@ import org.json.JSONObject
 import com.example.coins.Fragments.MainListFragment
 import com.example.coins.Network.NetworkUtils
 import com.example.coins.R
+import kotlinx.android.synthetic.main.fragment_main_list.*
 import java.io.IOException
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MainListFragment.ListenerTools  {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MainListFragment.ListenerTools {
 
     private var dbHelper = Database(this)
 
@@ -38,8 +40,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private var coinList = ArrayList<Coin>()
 
-    private lateinit var mainFragment : MainListFragment
-    private lateinit var mainContentFragment : MainDetailsFragment
+    private lateinit var mainFragment: MainListFragment
+    private lateinit var mainContentFragment: MainDetailsFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,15 +50,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            FetchCoinTask().execute("")
+
+            Snackbar.make(view, "Actualizando monedas", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
         }
 
         val toggle = ActionBarDrawerToggle(
-            this, drawer_layout, toolbar,
-            R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close
+                this, drawer_layout, toolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close
         )
+
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
@@ -66,14 +71,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
+
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelableArrayList(AppConstants.dataset_saveinstance_key,coinList)
+        outState.putParcelableArrayList(AppConstants.dataset_saveinstance_key, coinList)
         super.onSaveInstanceState(outState)
     }
 
     override fun managePortraitItemClick(item: Coin) {
         val coinBundle = Bundle()
-        coinBundle.putParcelable("COIN",item)
+        coinBundle.putParcelable("COIN", item)
         startActivity(Intent(this, CoinViewer::class.java).putExtras(coinBundle))
     }
 
@@ -82,7 +88,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         changeFragment(R.id.land_main_cont_fragment, mainContentFragment)
     }
 
-    fun initMainFragment(){
+    fun initMainFragment() {
 
         coinList = ArrayList<Coin>()
 
@@ -103,7 +109,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mainFragment = MainListFragment.newInstance(coinList)
 
 
-        val resource = if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
+        val resource = if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
             R.id.main_fragment
 
         else{
@@ -122,7 +128,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.land_main_fragment
         }
 
-        changeFragment(resource,mainFragment)
+        changeFragment(resource, mainFragment)
 
     }
 
@@ -133,7 +139,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }*/
 
 
-    private fun changeFragment(id: Int, frag:Fragment){ supportFragmentManager.beginTransaction().replace(id,frag).commit()}
+    private fun changeFragment(id: Int, frag: Fragment) {
+        supportFragmentManager.beginTransaction().replace(id, frag).commit()
+    }
 
 
     override fun onBackPressed() {
@@ -216,7 +224,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val root = JSONObject(coinInfo)
             val results = root.getJSONArray("buscadores")
 
-            var x = 0
+            var x = 4
+
 
             while(x < results.length()){
 

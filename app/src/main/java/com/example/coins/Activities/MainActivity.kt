@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         nav_view.setNavigationItemSelectedListener(this)
 
         initMainFragment()
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -83,6 +84,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     fun initMainFragment(){
 
+        coinList = ArrayList<Coin>()
+
+        var coins = readCoins()
+        Log.d("Read", coins.toString())
+
+        if(coins.isNotEmpty())
+        {
+            coinList = coins as ArrayList<Coin>
+            Log.d("Read", "Leido desde la base de datos local")
+        }
+        else
+        {
+            FetchCoinTask().execute("")
+            Log.d("Read", "Leido desde api")
+        }
+
         mainFragment = MainListFragment.newInstance(coinList)
 
 
@@ -90,7 +107,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.main_fragment
 
         else{
-            mainContentFragment = MainDetailsFragment.newInstance(Coin("Cualquier estupidez",
+            mainContentFragment = MainDetailsFragment.newInstance(Coin(R.string.n_a_value.toString(),
                 R.string.n_a_value.toString(),
                 R.string.n_a_value.toString(),
                 0,
@@ -106,20 +123,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         changeFragment(resource,mainFragment)
-
-        var coins = readCoins()
-        Log.d("Read", coins.toString())
-
-        if(coins.isNotEmpty())
-        {
-            Log.d("Read", "Leido desde la base de datos local")
-        }
-        else
-        {
-            FetchCoinTask().execute("")
-            Log.d("Read", "Leido desde api")
-
-        }
 
     }
 
@@ -205,72 +208,47 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         }
 
-        override fun onPostExecute(coinInfo: String) {
-                Log.d("msg", coinInfo)
+        override fun onPostExecute(coinInfo: String){
+            Log.d("msg", coinInfo)
 
-                val root = JSONObject(coinInfo)
-                val results = root.getJSONArray("buscadores")
+            deleteCoins()
 
-                var x = 0
+            val root = JSONObject(coinInfo)
+            val results = root.getJSONArray("buscadores")
 
-                while(x < results.length()){
+            var x = 0
 
-                    val result = JSONObject(results[x].toString())
-                    var coin = Coin(result.getString("_id"),
-                        result.getString("nombre"),
-                        result.getString("country"),
-                        result.getInt("value"),
-                        result.getInt("value_us"),
-                        2019,
-                        result.getString("review"),
-                        result.getBoolean("available"),
-                        result.getString("img"))
+            while(x < results.length()){
 
-                    coinList.add(coin)
-                    createCoin(coin)
+                val result = JSONObject(results[x].toString())
+                var coin = Coin(result.getString("_id"),
+                    result.getString("nombre"),
+                    result.getString("country"),
+                    result.getInt("value"),
+                    result.getInt("value_us"),
+                    2019,
+                    result.getString("review"),
+                    result.getBoolean("available"),
+                    result.getString("img"))
 
-                    x++
-                }
+                coinList.add(coin)
+                createCoin(coin)
 
+                x++
+            }
             mainFragment.updateCoinAdapter(coinList)
+            Log.d("Read", "Leido desde api")
 
-                /*MutableList(4){i->
-                    val result = JSONObject(results[i].toString())
 
-                    Coin(result.getString("_id"),
-                        result.getString("nombre"),
-                        result.getString("country"),
-                        result.getInt("value"),
-                        result.getInt("value_us"),
-                        2019,
-                        result.getString("review"),
-                        result.getBoolean("available"),
-                        result.getString("img"))
-                }
-
-            } else{
-                MutableList(4){
-                    Coin("Cualquier estupidez",
-                        R.string.n_a_value.toString(),
-                        R.string.n_a_value.toString(),
-                        0,
-                        0,
-                        0,
-                        R.string.n_a_value.toString(),
-                        false,
-                        R.string.n_a_value.toString())
-                }
-            } */
-
-            /*for(coin in coins){
-                addCoinToList(coin)
-            }*/
         }
     }
 
     private fun readCoins(): List<Coin> {
 
         val db = dbHelper.readableDatabase
+
+        var coinList2 = ArrayList<Coin>()
+
 
         val projection = arrayOf(
             BaseColumns._ID,
@@ -296,7 +274,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             sortOrder // sort order
         )
 
-        coinList = ArrayList<Coin>()
 
         with(cursor) {
             while (moveToNext()) {
@@ -312,12 +289,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     getString(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_IMG))
 
                 )
-                coinList.add(coin)
-                mainFragment.updateCoinAdapter(coinList)
+                coinList2.add(coin)
             }
         }
 
-        return coinList
+        return coinList2
     }
 
     private fun createCoin(item:Coin)
@@ -336,6 +312,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         val newRowId = db?.insert(DatabaseContract.CoinEntry.TABLE_NAME, null, values)
+
+    }
+
+    private fun deleteCoins()
+    {
+        val db = dbHelper.writableDatabase
+
+
+        val newRowId = db?.delete(DatabaseContract.CoinEntry.TABLE_NAME, null, null)
 
     }
 

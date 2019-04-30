@@ -8,7 +8,7 @@ import android.provider.BaseColumns
 
 private const val SQL_CREATE_ENTRIES =
     "CREATE TABLE ${DatabaseContract.CoinEntry.TABLE_NAME} (" +
-            "${BaseColumns._ID} INTEGER PRIMARY KEY," +
+            "${BaseColumns._ID} TEXT PRIMARY KEY," +
             "${DatabaseContract.CoinEntry.COLUMN_NOMBRE} TEXT," +
             "${DatabaseContract.CoinEntry.COLUMN_COUNTRY} TEXT," +
             "${DatabaseContract.CoinEntry.COLUMN_REVIEW} TEXT," +
@@ -40,6 +40,6 @@ class Database(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     // TODO(11) Se definen en constantes, el nombre de la base de datos y la versión
     companion object {
         const val DATABASE_NAME = "Coin.db"
-        const val DATABASE_VERSION = 1
+        const val DATABASE_VERSION = 3
     }
 }

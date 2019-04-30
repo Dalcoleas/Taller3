@@ -191,54 +191,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 initMainFragment()
             }
             R.id.nav_el_salvador -> {
-                coinList = ArrayList<Coin>()
-
-                var coins = filterCoins("El Salvador")
-
-                coinList = coins as ArrayList<Coin>
-                Log.d("Read", "Monedas de El Salvador")
-                Log.d("Read", coins.toString())
-                Toast.makeText(this@MainActivity, "Filtro: El Salvador", Toast.LENGTH_LONG).show()
-
-                initMainFragment()
+                showCoins("El Salvador")
             }
             R.id.nav_guatemala -> {
-                coinList = ArrayList<Coin>()
-
-                var coins = filterCoins("Guatemala")
-
-                coinList = coins as ArrayList<Coin>
-                Log.d("Read", "Monedas de Guatemala")
-                Log.d("Read", coins.toString())
-                Toast.makeText(this@MainActivity, "Filtro: Guatemala", Toast.LENGTH_LONG).show()
-
-                initMainFragment()
+                showCoins("Guatemala")
             }
             R.id.nav_honduras -> {
-                coinList = ArrayList<Coin>()
-
-                var coins = filterCoins("Honduras")
-
-                coinList = coins as ArrayList<Coin>
-                Log.d("Read", "Monedas de Honduras")
-                Log.d("Read", coins.toString())
-
-                Toast.makeText(this@MainActivity, "Filtro: Honduras", Toast.LENGTH_LONG).show()
-
-                initMainFragment()
+                showCoins("Honduras")
             }
             R.id.nav_costa_rica -> {
-                coinList = ArrayList<Coin>()
-
-                var coins = filterCoins("Costa Rica")
-
-                coinList = coins as ArrayList<Coin>
-                Log.d("Read", "Monedas de Costa Rica")
-                Log.d("Read", coins.toString())
-
-                Toast.makeText(this@MainActivity, "Filtro: Costa Rica", Toast.LENGTH_LONG).show()
-
-                initMainFragment()
+                showCoins("Costa Rica")
             }
         }
 
@@ -249,6 +211,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onDestroy() {
         dbHelper.close()
         super.onDestroy()
+    }
+
+    fun showCoins(country: String){
+        coinList = ArrayList<Coin>()
+
+        var coins = filterCoins(country)
+
+        coinList = coins as ArrayList<Coin>
+        Log.d("Read", "Monedas de $country")
+        Log.d("Read", coins.toString())
+        Toast.makeText(this@MainActivity, "Filtro: $country", Toast.LENGTH_LONG).show()
+
+        initMainFragment()
     }
 
 

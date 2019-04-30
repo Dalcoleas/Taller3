@@ -6,7 +6,6 @@
     <group android:checkableBehavior="single">
         <item
                 android:id="@+id/nav_all"
-                android:icon="@drawable/ic_menu_camera"
                 android:title="@string/todos"/>
     </group>
 
@@ -14,19 +13,15 @@
         <menu>
             <item
                     android:id="@+id/nav_el_salvador"
-                    android:icon="@drawable/ic_menu_camera"
                     android:title="@string/el_salvador"/>
             <item
                     android:id="@+id/nav_guatemala"
-                    android:icon="@drawable/ic_menu_gallery"
                     android:title="@string/guatemala"/>
             <item
                     android:id="@+id/nav_honduras"
-                    android:icon="@drawable/ic_menu_slideshow"
                     android:title="@string/honduras"/>
             <item
                     android:id="@+id/nav_costa_rica"
-                    android:icon="@drawable/ic_menu_manage"
                     android:title="@string/costa_rica"/>
         </menu>
     </item>

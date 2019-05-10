@@ -10,9 +10,9 @@ data class Coin (
     val value:Int?,
     val value_us:Int?,
     val year:Int?,
-    val review:String?,
+    var review:String?,
     val available:Boolean?,
-    val img:String?
+    var img:String?
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(

@@ -50,6 +50,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
@@ -101,8 +102,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun managePortraitItemClick(item: Coin) {
         val coinBundle = Bundle()
+
         coinBundle.putParcelable("COIN", item)
-        startActivity(Intent(this, CoinViewer::class.java).putExtras(coinBundle))
+        startActivity(Intent(this, CoinViewer::class.java).putExtras(coinBundle).putExtra("img",item.img).putExtra("review", item.review))
     }
 
     override fun manageLandscapeItemClick(item: Coin) {

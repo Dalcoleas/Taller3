@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:tools="http://schemas.android.com/tools"
+      xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto"
       tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
@@ -13,7 +13,9 @@
         <menu>
             <item
                     android:id="@+id/nav_el_salvador"
-                    android:title="@string/el_salvador"/>
+                    android:title="@string/el_salvador"
+                    android:icon="@drawable/ic_el_salvador"
+            />
             <item
                     android:id="@+id/nav_guatemala"
                     android:title="@string/guatemala"/>

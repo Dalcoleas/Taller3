@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -48,7 +49,8 @@ class MainListFragment : Fragment() {
     }
 
     fun initRecyclerView(orientation:Int, container:View){
-        val linearLayoutManager = LinearLayoutManager(this.context)
+        //val linearLayoutManager = LinearLayoutManager(this.context)
+        val gridLayoutManager = GridLayoutManager(this.context,2)
 
         if(orientation == Configuration.ORIENTATION_PORTRAIT){
             CoinAdapter =
@@ -67,7 +69,7 @@ class MainListFragment : Fragment() {
 
         container.rv_coins.apply {
             setHasFixedSize(true)
-            layoutManager = linearLayoutManager
+            layoutManager = gridLayoutManager
         }
     }
 

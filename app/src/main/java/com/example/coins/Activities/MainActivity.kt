@@ -112,8 +112,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     fun initMainFragment() {
 
-
-
         mainFragment = MainListFragment.newInstance(coinList)
 
 

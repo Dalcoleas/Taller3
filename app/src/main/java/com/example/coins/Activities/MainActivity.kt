@@ -37,10 +37,6 @@ import java.io.IOException
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MainListFragment.ListenerTools {
 
     private var dbHelper = Database(this)
-
-    private lateinit var viewAdapter: RecyclerView.Adapter<*>
-    private lateinit var viewManager: RecyclerView.LayoutManager
-
     private var coinList = ArrayList<Coin>()
 
     private lateinit var mainFragment: MainListFragment
@@ -50,15 +46,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
+        /*{ view ->
+            deleteCoins()
             FetchCoinTask().execute("")
 
             Snackbar.make(view, "Actualizando monedas", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
-        }
+        }*/
 
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar,

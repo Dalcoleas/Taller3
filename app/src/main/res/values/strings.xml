@@ -19,14 +19,14 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="name">Name</string>
-    <string name="country">Country</string>
-    <string name="value">Value</string>
+    <string name="country">Pais</string>
+    <string name="value">Valor</string>
     <string name="review">Review</string>
     <string name="disponible">Disponible</string>
     <string name="year">Año</string>
     <string name="valor">Valor</string>
     <string name="valor_us">Valor US</string>
-    <string name="available">Available</string>
+    <string name="available">Disponible</string>
     <string name="update">Update</string>
     <string name="action_update">Update</string>
 </resources>

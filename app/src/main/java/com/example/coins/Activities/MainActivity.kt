@@ -16,6 +16,7 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import com.example.coins.AppConstants
@@ -48,13 +49,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         setSupportActionBar(toolbar)
 
-        /*{ view ->
+
+        fab.setOnClickListener{ view ->
             deleteCoins()
             FetchCoinTask().execute("")
 
             Snackbar.make(view, "Actualizando monedas", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
-        }*/
+        }
 
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar,
@@ -100,7 +102,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val coinBundle = Bundle()
 
         coinBundle.putParcelable("COIN", item)
-        startActivity(Intent(this, CoinViewer::class.java).putExtras(coinBundle).putExtra("img",item.img).putExtra("review", item.review))
+        startActivity(Intent(this, CoinViewer::class.java).putExtras(coinBundle).putExtra("img",item.img).putExtra("review", item.review).putExtra("ava",item.available))
+        Log.d("image","Enviado + $coinBundle")
     }
 
     override fun manageLandscapeItemClick(item: Coin) {
@@ -262,7 +265,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     result.getString("country"),
                     result.getInt("value"),
                     result.getInt("value_us"),
-                    2019,
+                    result.getInt("year"),
                     result.getString("review"),
                     result.getBoolean("available"),
                     result.getString("img"))

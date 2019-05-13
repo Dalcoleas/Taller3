@@ -71,7 +71,7 @@
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
                         android:layout_marginBottom="4dp"
-                        android:text="Pais"
+                        android:text="@string/country"
                         android:textColor="#f1f2f6"
                         android:textSize="@dimen/font_details_size"
                         android:textStyle="bold"

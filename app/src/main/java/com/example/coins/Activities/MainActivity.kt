@@ -42,21 +42,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private lateinit var mainFragment: MainListFragment
     private lateinit var mainContentFragment: MainDetailsFragment
+    private lateinit var view: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         setSupportActionBar(toolbar)
-
-
-        fab.setOnClickListener{ view ->
-            deleteCoins()
-            FetchCoinTask().execute("")
-
-            Snackbar.make(view, "Actualizando monedas", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
 
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar,
@@ -170,7 +162,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
-            R.id.action_settings -> return true
+            R.id.action_settings -> {
+                updateCoins()
+                return true
+            }
             else -> return super.onOptionsItemSelected(item)
         }
     }
@@ -210,6 +205,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onDestroy() {
         dbHelper.close()
         super.onDestroy()
+    }
+
+    fun updateCoins(){
+        deleteCoins()
+        FetchCoinTask().execute("")
+        Toast.makeText(this@MainActivity, "Actualizando base de datos", Toast.LENGTH_LONG).show()
     }
 
     fun showCoins(country: String){

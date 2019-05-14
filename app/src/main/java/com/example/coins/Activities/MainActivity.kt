@@ -112,15 +112,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.main_fragment
 
         else{
-            mainContentFragment = MainDetailsFragment.newInstance(Coin(R.string.n_a_value.toString(),
-                R.string.n_a_value.toString(),
-                R.string.n_a_value.toString(),
+            mainContentFragment = MainDetailsFragment.newInstance(Coin(
+                getText(R.string.n_a_value).toString(),
+                getText(R.string.n_a_value).toString(),
+                getText(R.string.n_a_value).toString(),
                 0,
                 0,
-                0,
-                R.string.n_a_value.toString(),
+                2019,
+                getText(R.string.n_a_value).toString(),
                 false,
-                R.string.n_a_value.toString()))
+                getText(R.string.n_a_value).toString()))
 
             changeFragment(R.id.land_main_cont_fragment, mainContentFragment)
 

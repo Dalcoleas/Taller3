@@ -41,7 +41,7 @@ class CoinViewer : AppCompatActivity(){
             available_main_content_fragment.text = "Si"
         }
 
-        name_main_content_fragment.text = coin.nombre
+        collapsingtoolbarviewer.title = coin.nombre
         country_main_content_fragment.text = coin.country
         value_main_content_fragment.text = coin.value.toString()
         value_us_main_content_fragment.text = coin.value_us.toString()

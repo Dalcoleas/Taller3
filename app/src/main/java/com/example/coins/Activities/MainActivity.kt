@@ -16,6 +16,7 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import com.example.coins.AppConstants
@@ -37,10 +38,6 @@ import java.io.IOException
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MainListFragment.ListenerTools {
 
     private var dbHelper = Database(this)
-
-    private lateinit var viewAdapter: RecyclerView.Adapter<*>
-    private lateinit var viewManager: RecyclerView.LayoutManager
-
     private var coinList = ArrayList<Coin>()
 
     private lateinit var mainFragment: MainListFragment
@@ -50,10 +47,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
+
+        fab.setOnClickListener{ view ->
+            deleteCoins()
             FetchCoinTask().execute("")
 
             Snackbar.make(view, "Actualizando monedas", Snackbar.LENGTH_LONG)
@@ -104,7 +102,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val coinBundle = Bundle()
 
         coinBundle.putParcelable("COIN", item)
-        startActivity(Intent(this, CoinViewer::class.java).putExtras(coinBundle).putExtra("img",item.img).putExtra("review", item.review))
+        startActivity(Intent(this, CoinViewer::class.java).putExtras(coinBundle).putExtra("img",item.img).putExtra("review", item.review).putExtra("ava",item.available))
+        Log.d("image","Enviado + $coinBundle")
     }
 
     override fun manageLandscapeItemClick(item: Coin) {
@@ -264,7 +263,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     result.getString("country"),
                     result.getInt("value"),
                     result.getInt("value_us"),
-                    2019,
+                    result.getInt("year"),
                     result.getString("review"),
                     result.getBoolean("available"),
                     result.getString("img"))

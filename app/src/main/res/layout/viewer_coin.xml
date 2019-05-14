@@ -4,6 +4,8 @@
                                                  xmlns:tools="http://schemas.android.com/tools"
                                                  android:layout_width="match_parent"
                                                  android:layout_height="match_parent"
+                                                 android:background="#57606f"
+
                                                  tools:context=".Activities.CoinViewer">
 
     <android.support.design.widget.AppBarLayout
@@ -18,11 +20,12 @@
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
                 app:collapsedTitleTextAppearance="@style/CollapsedAppBar"
-                app:contentScrim="?attr/colorPrimaryDark"
+                app:contentScrim="#a4b0be"
                 app:expandedTitleTextAppearance="@style/ExpandedAppBar"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:layout_scrollInterpolator="@android:anim/decelerate_interpolator"
                 app:title="@string/n_a_value"
+                android:background="#57606f"
                 app:toolbarId="@id/toolbarviewer">
 
             <ImageView
@@ -43,7 +46,7 @@
     <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior">
 
         <LinearLayout
                 android:orientation="vertical"
@@ -52,6 +55,10 @@
 
             <LinearLayout
                     android:orientation="horizontal"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:padding="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -59,20 +66,20 @@
 
                 <TextView
                         android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         android:layout_height="wrap_content"
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
                         android:layout_marginBottom="4dp"
-
-                        android:text="Pais"
+                        android:text="@string/country"
+                        android:textColor="#f1f2f6"
                         android:textSize="@dimen/font_details_size"
                         android:textStyle="bold"
                 />
 
                 <TextView
                         android:id="@+id/country_main_content_fragment"
-
+                        android:textColor="#f1f2f6"
                         android:layout_width="0dp"
                         android:layout_weight="3"
                         android:layout_height="wrap_content"
@@ -87,6 +94,10 @@
             </LinearLayout>
 
             <LinearLayout
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:padding="8dp"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -95,11 +106,12 @@
 
                 <TextView
                         android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         android:layout_height="wrap_content"
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
                         android:layout_marginBottom="4dp"
+                        android:textColor="#f1f2f6"
 
                         android:text="@string/valor"
                         android:textSize="@dimen/font_details_size"
@@ -115,6 +127,7 @@
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
                         android:layout_marginBottom="4dp"
+                        android:textColor="#f1f2f6"
 
                         android:text="@string/n_a_value"
                         android:textSize="@dimen/font_details_size"
@@ -123,6 +136,10 @@
             </LinearLayout>
 
             <LinearLayout
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:padding="8dp"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -131,11 +148,12 @@
 
                 <TextView
                         android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         android:layout_height="wrap_content"
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
                         android:layout_marginBottom="4dp"
+                        android:textColor="#f1f2f6"
 
                         android:text="@string/valor_us"
                         android:textSize="@dimen/font_details_size"
@@ -151,6 +169,7 @@
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
                         android:layout_marginBottom="4dp"
+                        android:textColor="#f1f2f6"
 
                         android:text="@string/n_a_value"
                         android:textSize="@dimen/font_details_size"
@@ -159,6 +178,10 @@
             </LinearLayout>
 
             <LinearLayout
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:padding="8dp"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -167,11 +190,12 @@
 
                 <TextView
                         android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         android:layout_height="wrap_content"
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
                         android:layout_marginBottom="4dp"
+                        android:textColor="#f1f2f6"
 
                         android:text="@string/year"
                         android:textSize="@dimen/font_details_size"
@@ -180,6 +204,7 @@
 
                 <TextView
                         android:id="@+id/year_main_content_fragment"
+                        android:textColor="#f1f2f6"
 
                         android:layout_width="0dp"
                         android:layout_weight="3"
@@ -194,6 +219,10 @@
 
             </LinearLayout>
             <LinearLayout
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:padding="8dp"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -202,11 +231,12 @@
 
                 <TextView
                         android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         android:layout_height="wrap_content"
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
                         android:layout_marginBottom="4dp"
+                        android:textColor="#f1f2f6"
 
                         android:text="@string/review"
                         android:textSize="@dimen/font_details_size"
@@ -222,6 +252,7 @@
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
                         android:layout_marginBottom="4dp"
+                        android:textColor="#f1f2f6"
 
                         android:text="@string/n_a_value"
                         android:textSize="@dimen/font_details_size"
@@ -229,6 +260,10 @@
 
             </LinearLayout>
             <LinearLayout
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:padding="8dp"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -237,11 +272,12 @@
 
                 <TextView
                         android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         android:layout_height="wrap_content"
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
                         android:layout_marginBottom="4dp"
+                        android:textColor="#f1f2f6"
 
                         android:text="@string/disponible"
                         android:textSize="@dimen/font_details_size"
@@ -257,6 +293,7 @@
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
                         android:layout_marginBottom="4dp"
+                        android:textColor="#f1f2f6"
 
                         android:text="@string/n_a_value"
                         android:textSize="@dimen/font_details_size"

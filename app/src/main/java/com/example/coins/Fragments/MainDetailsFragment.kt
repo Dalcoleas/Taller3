@@ -49,6 +49,7 @@ class MainDetailsFragment : Fragment() {
 
         Glide.with(view.context)
             .load(coin.img)
+            .centerCrop()
             .placeholder(R.drawable.ic_launcher_background)
             .into(view.image_main_content_fragment)
     }

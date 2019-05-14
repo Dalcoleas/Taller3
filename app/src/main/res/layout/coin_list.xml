@@ -8,12 +8,13 @@
     app:cardMaxElevation="4dp"
     app:cardElevation="2dp"
     app:contentPadding="5dp"
+    app:cardBackgroundColor="#8395a7"
     android:padding="5dp"
     android:layout_margin="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
-        android:id="@+id/linear"
+            android:id="@+id/linear"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="4dp"
@@ -29,6 +30,7 @@
         android:layout_marginBottom="3dp"/>
 
         <TextView
+                android:textColor="#f1f2f6"
             android:id="@+id/tv_name"
             android:gravity="center"
             android:layout_width="match_parent"
@@ -37,7 +39,9 @@
             android:text="Name"/>
 
         <TextView
-            android:id="@+id/tv_country"
+                android:textColor="#f1f2f6"
+
+                android:id="@+id/tv_country"
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

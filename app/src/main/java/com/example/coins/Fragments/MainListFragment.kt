@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.coins.AppConstants
 import com.example.coins.Adapters.CoinAdapter
+import com.example.coins.Adapters.CoinLandAdapter
 import com.example.coins.Models.Coin
 import com.example.coins.MyAdapter
 import com.example.coins.R
@@ -49,7 +50,7 @@ class MainListFragment : Fragment() {
     }
 
     fun initRecyclerView(orientation:Int, container:View){
-        //val linearLayoutManager = LinearLayoutManager(this.context)
+        val linearLayoutManager = LinearLayoutManager(this.context)
         val gridLayoutManager = GridLayoutManager(this.context,2)
 
         if(orientation == Configuration.ORIENTATION_PORTRAIT){
@@ -57,20 +58,28 @@ class MainListFragment : Fragment() {
                 CoinAdapter(
                     listCoin,
                     { item: Coin -> listenerTools?.managePortraitItemClick(item) })
+
+            container.rv_coins.adapter = CoinAdapter as CoinAdapter
+
+            container.rv_coins.apply {
+                setHasFixedSize(true)
+                layoutManager = gridLayoutManager
+            }
         }
         if(orientation == Configuration.ORIENTATION_LANDSCAPE){
             CoinAdapter =
-                CoinAdapter(
+                CoinLandAdapter(
                     listCoin,
                     { item: Coin -> listenerTools?.manageLandscapeItemClick(item) })
+
+            container.rv_coins.adapter = CoinAdapter as CoinLandAdapter
+
+            container.rv_coins.apply {
+                setHasFixedSize(true)
+                layoutManager = linearLayoutManager
+            }
         }
 
-        container.rv_coins.adapter = CoinAdapter as CoinAdapter
-
-        container.rv_coins.apply {
-            setHasFixedSize(true)
-            layoutManager = gridLayoutManager
-        }
     }
 
     fun updateCoinAdapter(coinList: ArrayList<Coin>){ CoinAdapter.changeDataSet(coinList) }

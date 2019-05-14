@@ -24,15 +24,14 @@ class CoinViewer : AppCompatActivity(){
                 R.string.n_a_value.toString())
 
             receiver.img = mIntent.getStringExtra("img")
+            receiver.review= mIntent.getStringExtra("review")
+            receiver.available = mIntent.getBooleanExtra("ava",true)
 
-                receiver.review= mIntent.getStringExtra("review")
-
-            Log.d("Image URL: ", receiver.toString())
+            Log.d("Image URL: ", "Recibiendo: $receiver")
 
             init(receiver)
 
         }
-
 
     }
 

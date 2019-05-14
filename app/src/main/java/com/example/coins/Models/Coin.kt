@@ -7,11 +7,11 @@ data class Coin (
     val _id:String?,
     val nombre:String?,
     val country:String?,
-    val value:Int?,
+    var value:Int?,
     val value_us:Int?,
-    val year:Int?,
+    var year:Int?,
     var review:String?,
-    val available:Boolean?,
+    var available:Boolean?,
     var img:String?
 ) : Parcelable {
 

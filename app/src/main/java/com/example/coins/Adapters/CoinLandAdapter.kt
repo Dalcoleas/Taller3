@@ -4,6 +4,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 import com.example.coins.Models.Coin
 import com.example.coins.MyAdapter
@@ -35,6 +37,12 @@ class CoinLandAdapter (var items: ArrayList<Coin>, val clickListener: (Coin)->Un
         fun bind(item: Coin, clickListener:  (Coin) -> Unit) = with(itemView){
             tv_det_name.text = item.nombre
             tv_det_country.text = item.country
+
+            Glide.with(itemView.context)
+                .load(item.img)
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(itemView.det_image)
 
             itemView.setOnClickListener{(clickListener(item))}
         }

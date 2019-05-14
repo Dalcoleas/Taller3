@@ -39,12 +39,17 @@ class MainDetailsFragment : Fragment() {
     }
 
     fun bindData(view: View){
+
+        if(!coin.available){
+            view.available_main_content_fragment.text = "No"
+        } else{
+            view.available_main_content_fragment.text = "Si"
+        }
         view.name_main_content_fragment.text = coin.nombre
         view.country_main_content_fragment.text = coin.country
         view.value_main_content_fragment.text = coin.value.toString()
         view.value_us_main_content_fragment.text = coin.value_us.toString()
         view.year_main_content_fragment.text = coin.year.toString()
-        view.available_main_content_fragment.text = coin.available.toString()
         view.review_main_content_fragment.text = coin.review
 
         Glide.with(view.context)

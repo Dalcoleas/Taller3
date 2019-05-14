@@ -32,16 +32,18 @@ class CoinViewer : AppCompatActivity(){
     }
 
     fun init(coin: Coin){
+        if(!coin.available){
+            available_main_content_fragment.text = "No"
+        } else{
+            available_main_content_fragment.text = "Si"
+        }
 
-
-        collapsingtoolbarviewer.title = coin.nombre
+        name_main_content_fragment.text = coin.nombre
         country_main_content_fragment.text = coin.country
         value_main_content_fragment.text = coin.value.toString()
         value_us_main_content_fragment.text = coin.value_us.toString()
         year_main_content_fragment.text = coin.year.toString()
         review_main_content_fragment.text = coin.review
-        available_main_content_fragment.text = coin.available.toString()
-
         Glide.with(this)
             .load(coin.img)
             .centerCrop()

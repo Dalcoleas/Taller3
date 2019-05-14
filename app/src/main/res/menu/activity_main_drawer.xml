@@ -14,7 +14,6 @@
             <item
                     android:id="@+id/nav_el_salvador"
                     android:title="@string/el_salvador"
-                    android:icon="@drawable/ic_el_salvador"
             />
             <item
                     android:id="@+id/nav_guatemala"

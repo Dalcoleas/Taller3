@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val coinBundle = Bundle()
 
         coinBundle.putParcelable("COIN", item)
-        startActivity(Intent(this, CoinViewer::class.java).putExtras(coinBundle).putExtra("img",item.img).putExtra("review", item.review).putExtra("ava",item.available))
+        startActivity(Intent(this, CoinViewer::class.java).putExtras(coinBundle))
         Log.d("image","Enviado + $coinBundle")
     }
 

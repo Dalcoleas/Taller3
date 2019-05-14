@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.coins.Models.Coin
 import com.example.coins.R
+import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.viewer_coin.*
 
 class CoinViewer : AppCompatActivity(){
@@ -14,6 +15,8 @@ class CoinViewer : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.viewer_coin)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val mIntent = intent
 

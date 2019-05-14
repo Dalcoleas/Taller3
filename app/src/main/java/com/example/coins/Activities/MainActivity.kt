@@ -209,6 +209,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     fun updateCoins(){
         deleteCoins()
+        coinList = ArrayList<Coin>()
+        mainFragment.updateCoinAdapter(coinList)
         FetchCoinTask().execute("")
         Toast.makeText(this@MainActivity, "Actualizando base de datos", Toast.LENGTH_LONG).show()
     }
